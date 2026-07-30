@@ -6,7 +6,6 @@ zone sombre en dessous. C'est exactement ce qu'il faut reproduire, rien de plus.
 
 import numpy as np
 
-from . import anatomy as A
 from .meshtools import object_from_arrays, grid_faces, join_objects
 
 

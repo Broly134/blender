@@ -9,7 +9,7 @@ brosse "grab" en sculpture, mais definies analytiquement.
 import numpy as np
 
 from . import anatomy as A
-from .mathutil import bump, smoothstep, biased_samples, Profile
+from .mathutil import bump, smoothstep, biased_samples
 from .meshtools import object_from_arrays, grid_faces, cap_ring
 
 
@@ -108,7 +108,7 @@ def add_bump(v, center, radii, amount, direction="Y", power=1.0,
 # ---------------------------------------------------------------------------
 
 def sculpt_nose(v):
-    x, y, z = v[:, 0], v[:, 1], v[:, 2]
+    x, z = v[:, 0], v[:, 2]
     gate = _front_gate(v, 0.010, 0.045)
 
     ridge = A.NOSE_RIDGE(np.clip(z, 0.0555, 0.1290))

@@ -1,9 +1,5 @@
 """Assemblage complet du personnage."""
 
-import bpy
-
-from . import scene as sc
-
 
 def assemble(quality=1.0, with_hair=True, with_hat=True, with_glasses=True,
              with_straw=True, with_clothing=True, gaze=(0.012, 0.470, 0.128)):
@@ -34,10 +30,11 @@ def assemble(quality=1.0, with_hair=True, with_hat=True, with_glasses=True,
 
     if with_hair:
         from .hair import groom
-        groom(head, ears, quality=quality)
+        groom(head, quality=quality)
 
     if with_clothing:
-        objects["clothing"] = build_clothing_safe()
+        from .clothing import build_clothing
+        objects["clothing"] = build_clothing()
     if with_hat:
         from .hat import build_hat
         objects["hat"] = build_hat()
@@ -51,19 +48,3 @@ def assemble(quality=1.0, with_hair=True, with_hat=True, with_glasses=True,
     return objects
 
 
-def build_clothing_safe():
-    from .clothing import build_clothing
-    return build_clothing()
-
-
-def full_scene(quality=1.0, **kwargs):
-    """Personnage + decor exterieur + camera, pret a rendre."""
-    sc.reset_scene()
-    sc.setup_world(strength=0.34)
-    sc.add_sun()
-    sc.add_bounce()
-    sc.add_ground()
-    sc.add_backdrop()
-    objs = assemble(quality=quality, **kwargs)
-    cam = sc.add_camera()
-    return objs, cam

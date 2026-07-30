@@ -39,6 +39,7 @@ Options de `scripts/render.py` :
 | `--cam` | `portrait`, `face`, `profile`, `wide` |
 | `--exposure` | correction d'exposition en EV |
 | `--save f.blend` | enregistre aussi la scène `.blend` |
+| `--post 0` | désactive la retouche photographique |
 
 ## Comment c'est construit
 
@@ -131,6 +132,16 @@ favoris pour l'implantation des cheveux. Le frisottis vient d'un kink `CURL`.
   éclair, plis basse fréquence.
 * **Décor** (`scene.py`) — ciel physique (diffusion multiple), soleil dur, talus
   et buissons échelonnés en profondeur, le tout noyé par la profondeur de champ.
+  Le fond vu par la caméra est assombri et saturé séparément (nœud Light Path),
+  ce qui donne le bleu dense d'un ciel d'été sans surexposer l'éclairage indirect.
+
+### 6. Retouche photographique
+
+Le compositeur de Blender 5 exige un contexte GPU et rend une image vide en
+headless : `scripts/postprocess.py` refait donc directement sur les pixels les
+défauts d'objectif que l'œil attend d'une photo — voile lumineux sur les hautes
+lumières, aberration chromatique latérale, vignetage et grain modulé par la
+luminance. C'est enchaîné automatiquement à la fin de `render.py`.
 
 ## Arborescence
 
@@ -152,6 +163,7 @@ character/
 scripts/
   render.py           rendu du personnage complet
   preview_head.py     rendu argile de la sculpture
+  postprocess.py      retouche photographique du rendu
 ```
 
 ## Notes

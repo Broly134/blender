@@ -9,7 +9,7 @@ texture d'une barbe et de cheveux afro courts.
 import numpy as np
 
 from . import anatomy as A
-from .mathutil import smoothstep, bump
+from .mathutil import smoothstep
 from .meshtools import add_vertex_group, vertex_coords
 
 
@@ -129,7 +129,7 @@ def add_hair(obj, name, group, material_index, *, count, length,
              children=14, kink_amp=0.0012, kink_freq=9.0, roughness=0.0016,
              clump=-0.35, length_random=0.45, quality=1.0, tip=0.00006,
              root=0.00016, brownian=0.0):
-    mod = obj.modifiers.new(name, "PARTICLE_SYSTEM")
+    obj.modifiers.new(name, "PARTICLE_SYSTEM")
     psys = obj.particle_systems[-1]
     psys.name = name
     ps = psys.settings
@@ -175,7 +175,7 @@ def add_hair(obj, name, group, material_index, *, count, length,
     return psys
 
 
-def groom(head, ears, quality=1.0):
+def groom(head, quality=1.0):
     """Pose tous les systemes de poils sur la tete (et les oreilles pour le duvet)."""
     from .materials import hair_material
 

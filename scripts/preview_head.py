@@ -3,7 +3,6 @@
     bpyenv/bin/python scripts/preview_head.py --views front,side,three
 """
 
-import math
 import os
 import sys
 

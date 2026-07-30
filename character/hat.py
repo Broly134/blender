@@ -8,7 +8,7 @@ l'angle : plongeante devant, franchement relevee sur les cotes.
 
 import numpy as np
 
-from .mathutil import smoothstep, bump, Profile
+from .mathutil import smoothstep
 from .meshtools import object_from_arrays, grid_faces, cap_ring, add_solidify
 
 

@@ -23,23 +23,6 @@ def smoothstep(edge0, edge1, x):
     return t * t * (3.0 - 2.0 * t)
 
 
-def smin(a, b, k):
-    """Minimum lisse (union douce facon SDF)."""
-    h = np.clip(0.5 + 0.5 * (b - a) / k, 0.0, 1.0)
-    return b * (1.0 - h) + a * h - k * h * (1.0 - h)
-
-
-def ellipsoid_falloff(p, center, radii, power=1.0):
-    """Champ scalaire dans [0, 1] : 1 au centre d'un ellipsoide, 0 au bord."""
-    d = (np.asarray(p) - np.asarray(center)) / np.asarray(radii)
-    t = np.sqrt(np.sum(d * d, axis=-1))
-    return bump(t) ** power
-
-
-# --------------------------------------------------------------------------
-# profils 1D lisses
-# --------------------------------------------------------------------------
-
 def _pchip_slopes(x, y):
     """Pentes de Fritsch-Carlson : interpolation cubique sans overshoot."""
     n = len(x)
@@ -129,17 +112,3 @@ def biased_samples(count, weight_fn, lo, hi, periodic=False):
     return np.interp(targets, cdf, fine)
 
 
-def rotate_x(p, angle):
-    c, s = np.cos(angle), np.sin(angle)
-    out = np.array(p, dtype=np.float64, copy=True)
-    out[..., 1] = p[..., 1] * c - p[..., 2] * s
-    out[..., 2] = p[..., 1] * s + p[..., 2] * c
-    return out
-
-
-def rotate_z(p, angle):
-    c, s = np.cos(angle), np.sin(angle)
-    out = np.array(p, dtype=np.float64, copy=True)
-    out[..., 0] = p[..., 0] * c - p[..., 1] * s
-    out[..., 1] = p[..., 0] * s + p[..., 1] * c
-    return out

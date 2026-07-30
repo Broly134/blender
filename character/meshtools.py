@@ -62,19 +62,6 @@ def cap_ring(start_index, count, flip=False):
     return tuple(reversed(ring)) if flip else tuple(ring)
 
 
-def revolve(profile_xy, segments, close_profile=False, flip=False):
-    """Revolution d'un profil (r, z) autour de l'axe Z."""
-    prof = np.asarray(profile_xy, dtype=np.float64)
-    theta = np.linspace(0.0, 2.0 * np.pi, segments, endpoint=False)
-    verts = np.empty((len(prof) * segments, 3))
-    for i, (r, z) in enumerate(prof):
-        verts[i * segments:(i + 1) * segments, 0] = r * np.cos(theta)
-        verts[i * segments:(i + 1) * segments, 1] = r * np.sin(theta)
-        verts[i * segments:(i + 1) * segments, 2] = z
-    faces = grid_faces(len(prof), segments, close_cols=True, flip=flip)
-    return verts, faces
-
-
 def uv_sphere_arrays(radius=1.0, rings=32, segments=48, center=(0, 0, 0)):
     phi = np.linspace(0.0, np.pi, rings)
     theta = np.linspace(0.0, 2.0 * np.pi, segments, endpoint=False)
@@ -107,21 +94,6 @@ def vertex_coords(obj):
 def set_vertex_coords(obj, coords):
     obj.data.vertices.foreach_set("co", np.asarray(coords, dtype=np.float32).ravel())
     obj.data.update()
-
-
-def shade_smooth(obj, angle=None):
-    for poly in obj.data.polygons:
-        poly.use_smooth = True
-    if angle is not None and hasattr(obj.data, "use_auto_smooth"):
-        obj.data.use_auto_smooth = True
-        obj.data.auto_smooth_angle = angle
-
-
-def add_subsurf(obj, levels=1, render_levels=2):
-    mod = obj.modifiers.new("Subdivision", "SUBSURF")
-    mod.levels = levels
-    mod.render_levels = render_levels
-    return mod
 
 
 def add_solidify(obj, thickness, offset=-1.0):
@@ -246,24 +218,3 @@ def join_objects(objects, name=None):
     return target
 
 
-def curve_object(name, points, radius_profile=None, bevel_depth=0.0,
-                 resolution=12, collection=None):
-    """Cree une courbe Bezier/poly lissee, utilisee pour la paille et les branches."""
-    curve = bpy.data.curves.new(name, type="CURVE")
-    curve.dimensions = "3D"
-    curve.resolution_u = resolution
-    curve.bevel_depth = bevel_depth
-    curve.bevel_resolution = 6
-    curve.use_fill_caps = True
-
-    spline = curve.splines.new("NURBS")
-    spline.points.add(len(points) - 1)
-    for i, p in enumerate(points):
-        spline.points[i].co = (p[0], p[1], p[2], 1.0)
-        if radius_profile is not None:
-            spline.points[i].radius = float(radius_profile[i])
-    spline.use_endpoint_u = True
-    spline.order_u = min(4, len(points))
-
-    obj = bpy.data.objects.new(name, curve)
-    return link(obj, collection)

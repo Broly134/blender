@@ -309,21 +309,6 @@ def eye_material(name="Oeil"):
     return mat
 
 
-def wet_material(name="Larme"):
-    """Film lacrymal : une fine couche brillante posee sur le globe."""
-    mat = new_material(name)
-    nt = mat.node_tree
-    bsdf = _principled(nt, (0, 0))
-    set_input(bsdf, ["Base Color"], (0.02, 0.015, 0.012, 1.0))
-    set_input(bsdf, ["Roughness"], 0.03)
-    set_input(bsdf, ["IOR"], 1.336)
-    set_input(bsdf, ["Transmission Weight", "Transmission"], 1.0)
-    _output(nt, bsdf)
-    if hasattr(mat, "use_screen_refraction"):
-        mat.use_screen_refraction = True
-    return mat
-
-
 def teeth_material(name="Dents"):
     mat = new_material(name)
     nt = mat.node_tree
