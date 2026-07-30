@@ -196,6 +196,71 @@ def add_backdrop():
     return objs
 
 
+def setup_compositing(glare=0.16, dispersion=0.0035, distortion=0.006):
+    """Voile lumineux et dispersion chromatique : deux defauts d'objectif que
+    l'oeil attend sur une photo, et dont l'absence trahit une image de synthese.
+
+    Blender 5 a deplace le compositeur dans un groupe de noeuds
+    (`scene.compositing_node_group`) ; on gere les deux API.
+    """
+    scene = bpy.context.scene
+    scene.use_nodes = True
+
+    if hasattr(scene, "compositing_node_group"):
+        nt = bpy.data.node_groups.new("PostTraitement", "CompositorNodeTree")
+        nt.interface.new_socket("Image", in_out="INPUT", socket_type="NodeSocketColor")
+        nt.interface.new_socket("Image", in_out="OUTPUT", socket_type="NodeSocketColor")
+        src = nt.nodes.new("NodeGroupInput")
+        dst = nt.nodes.new("NodeGroupOutput")
+        scene.compositing_node_group = nt
+    else:
+        nt = scene.node_tree
+        nt.nodes.clear()
+        src = nt.nodes.new("CompositorNodeRLayers")
+        dst = nt.nodes.new("CompositorNodeComposite")
+
+    src.location = (-600, 0)
+    dst.location = (400, 0)
+    last = src.outputs["Image"]
+
+    def _socket(node, name, value):
+        if name in node.inputs:
+            try:
+                node.inputs[name].default_value = value
+            except (TypeError, AttributeError):
+                pass
+
+    gl = nt.nodes.new("CompositorNodeGlare")
+    gl.location = (-320, 0)
+    _set_enum(gl, "glare_type", ["FOG_GLOW", "BLOOM"])       # API 4.x
+    _socket(gl, "Type", "FOG_GLOW")                          # API 5.x
+    _socket(gl, "Quality", "HIGH")
+    _socket(gl, "Threshold", 1.10)
+    _socket(gl, "Strength", glare)
+    _socket(gl, "Size", 0.62)
+    for attr, val in (("threshold", 1.10), ("size", 7), ("mix", glare - 1.0)):
+        if hasattr(gl, attr):
+            try:
+                setattr(gl, attr, val)
+            except (TypeError, AttributeError):
+                pass
+    nt.links.new(last, gl.inputs["Image"])
+    last = gl.outputs["Image"]
+
+    ld = nt.nodes.new("CompositorNodeLensdist")
+    ld.location = (-100, 0)
+    if hasattr(ld, "use_fit"):
+        ld.use_fit = True
+    _socket(ld, "Fit", True)
+    _socket(ld, "Dispersion", dispersion)
+    _socket(ld, "Distortion", distortion)
+    nt.links.new(last, ld.inputs["Image"])
+    last = ld.outputs["Image"]
+
+    nt.links.new(last, dst.inputs["Image"])
+    return nt
+
+
 def setup_render(width=1024, height=1536, samples=256, denoise=True,
                  exposure=0.0, output=None):
     scene = bpy.context.scene
@@ -241,6 +306,8 @@ def setup_render(width=1024, height=1536, samples=256, denoise=True,
 
 def _set_enum(owner, attr, candidates):
     """Assigne la premiere valeur d'enum acceptee (les noms changent selon la version)."""
+    if not hasattr(owner, attr):
+        return None
     for c in candidates:
         try:
             setattr(owner, attr, c)

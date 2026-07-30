@@ -62,7 +62,7 @@ def beard_weights(v):
 
     # devant seulement, et pas trop bas dans le cou
     w *= smoothstep(-0.010, 0.030, y)
-    w *= smoothstep(-0.078, -0.042, z)
+    w *= smoothstep(-0.078, -0.042, z + edge * 1.6)
 
     # ni sur les levres ni sur le bord des narines
     lips = np.exp(-0.5 * (((x) / 0.030) ** 2

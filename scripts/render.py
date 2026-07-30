@@ -8,6 +8,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import bpy  # noqa: E402
 
@@ -20,7 +21,7 @@ DEFAULTS = {
     "res": "1024x1536",
     "samples": "300",
     "quality": "1.0",
-    "exposure": "0.28",
+    "exposure": "0.36",
     "cam": "portrait",
     "hair": "1",
     "save": "",
@@ -64,12 +65,20 @@ def main():
                     exposure=float(o["exposure"]),
                     output=os.path.abspath(o["out"]))
 
+    bpy.ops.render.render(write_still=True)
+    print("ECRIT", o["out"])
+
+    if o.get("post", "1") != "0":
+        from postprocess import process, _load, _save
+        px, w, h = _load(o["out"])
+        _save(process(px), os.path.abspath(o["out"]), w, h)
+        print("POST", o["out"])
+
+    # la sauvegarde vient en dernier : dans le module bpy, save_as_mainfile
+    # remplace le contexte courant et coupe court a tout ce qui suit
     if o["save"]:
         bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(o["save"]))
         print("BLEND", o["save"])
-
-    bpy.ops.render.render(write_still=True)
-    print("ECRIT", o["out"])
 
 
 main()
