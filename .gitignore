@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+bpyenv/
+renders/test*.png
+renders/clay*.png
+renders/diag*.png
