@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1264"
+   height="841"
+   viewBox="0 0 1264 841"
+   version="1.1"
+   id="svg21"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7">
+    <linearGradient
+       id="brandGrad"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="0%">
+      <stop
+         offset="0"
+         stop-color="#123A78"
+         id="stop1" />
+      <stop
+         offset=".55"
+         stop-color="#2A9AC2"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#16A48F"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="leftSeg"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#149C9A"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#2E9DBB"
+         id="stop5" />
+    </linearGradient>
+    <linearGradient
+       id="rightSeg"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#3E97C5"
+         id="stop6" />
+      <stop
+         offset="1"
+         stop-color="#277EB4"
+         id="stop7" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata7">PurePeptide original branding reconstructed as clean vector geometry. Transparent background.</metadata>
+  <g
+     id="purepeptide-logo"
+     transform="matrix(1.798630533,0,0,1.798210272,-788.896518469,-190.853047203)">
+    <polyline
+       points="800.34,232.65 786.55,224.03 686.02,285.56 686.02,398.29 711.30,414.39"
+       fill="none"
+       stroke="url(#leftSeg)"
+       stroke-width="7.76"
+       stroke-linecap="butt"
+       stroke-linejoin="miter"
+       id="polyline7" />
+    <polyline
+       points="863.53,266.01 893.40,285.56 893.40,398.29 793.45,459.82 775.06,448.90"
+       fill="none"
+       stroke="url(#rightSeg)"
+       stroke-width="7.76"
+       stroke-linecap="butt"
+       stroke-linejoin="miter"
+       id="polyline8" />
+    <circle
+       cx="829.29"
+       cy="250.25"
+       r="11.44"
+       fill="#124084"
+       id="circle8" />
+    <circle
+       cx="798.5"
+       cy="269.63"
+       r="11.44"
+       fill="#144B87"
+       id="circle9" />
+    <circle
+       cx="837.57"
+       cy="287.46"
+       r="9.14"
+       fill="#16568A"
+       id="circle10" />
+    <circle
+       cx="775.18"
+       cy="290.68"
+       r="8.97"
+       fill="#16578B"
+       id="circle11" />
+    <circle
+       cx="828.66"
+       cy="316.39"
+       r="11.44"
+       fill="#19668F"
+       id="circle12" />
+    <circle
+       cx="801.37"
+       cy="324.38"
+       r="11.27"
+       fill="#1A6B90"
+       id="circle13" />
+    <circle
+       cx="775.24"
+       cy="321.68"
+       r="8.97"
+       fill="#1A698F"
+       id="circle14" />
+    <circle
+       cx="776.16"
+       cy="357.63"
+       r="11.27"
+       fill="#1D7E95"
+       id="circle15" />
+    <circle
+       cx="748.12"
+       cy="364.81"
+       r="11.27"
+       fill="#1E8296"
+       id="circle16" />
+    <circle
+       cx="802.06"
+       cy="361.31"
+       r="9.02"
+       fill="#1E8095"
+       id="circle17" />
+    <circle
+       cx="802.01"
+       cy="391.85"
+       r="9.02"
+       fill="#21919A"
+       id="circle18" />
+    <circle
+       cx="739.27"
+       cy="393.0"
+       r="9.2"
+       fill="#21929A"
+       id="circle19" />
+    <circle
+       cx="778.22"
+       cy="411.92"
+       r="11.44"
+       fill="#239D9D"
+       id="circle20" />
+    <circle
+       cx="741.57"
+       cy="427.73"
+       r="11.09"
+       fill="#25A6A0"
+       id="circle21" />
+  </g>
+</svg>
