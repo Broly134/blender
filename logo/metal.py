@@ -165,7 +165,7 @@ def logo_material(name, color=(0.5, 0.5, 0.5), gradient=None, finish="polished",
     links.new(coord.outputs["Object"], rough_tex.inputs["Vector"])
 
     defaults = {"polished": 0.095, "brushed": 0.250, "chrome": 0.045,
-                "gold": 0.130, "paint": 0.140}
+                "gold": 0.130, "paint": 0.300}
     r0 = roughness if roughness is not None else defaults.get(finish, 0.10)
 
     rmap = nodes.new("ShaderNodeMapRange")
@@ -183,10 +183,12 @@ def logo_material(name, color=(0.5, 0.5, 0.5), gradient=None, finish="polished",
     link_input(nt, bump.outputs["Normal"], bsdf, "Normal")
 
     if finish == "paint":
-        set_input(bsdf, ["Metallic"], 0.25)
-        set_input(bsdf, ["Coat Weight", "Clearcoat"], 1.0)
-        set_input(bsdf, ["Coat Roughness", "Clearcoat Roughness"], 0.035)
-        set_input(bsdf, ["Specular IOR Level", "Specular"], 0.55)
+        # le vernis reste net mais ne couvre plus toute la surface : sous un
+        # eclairage cale pour du metal, un coat plein brulait la piece entiere
+        set_input(bsdf, ["Metallic"], 0.0)
+        set_input(bsdf, ["Coat Weight", "Clearcoat"], 0.32)
+        set_input(bsdf, ["Coat Roughness", "Clearcoat Roughness"], 0.075)
+        set_input(bsdf, ["Specular IOR Level", "Specular"], 0.42)
     else:
         set_input(bsdf, ["Metallic"], 1.0)
         set_input(bsdf, ["Coat Weight", "Clearcoat"], 0.22)

@@ -63,8 +63,13 @@ def add_area(name, location, target, size, energy, color=(1, 1, 1),
     return obj
 
 
-def lighting(scale=1.0, key=105.0, warm=(1.0, 0.97, 0.93), cool=(0.90, 0.95, 1.0)):
+def lighting(scale=1.0, key=105.0, warm=(1.0, 0.97, 0.93), cool=(0.90, 0.95, 1.0),
+             strip_boost=1.0, power=1.0):
+    """`strip_boost` dose les reglettes. Elles sont tres puissantes pour un
+    metal, qui ne renvoie que son lobe speculaire ; une surface diffuse, elle,
+    recoit tout l'hemisphere et brulerait avec les memes reglages."""
     s = scale
+    key = key * power
     lights = [
         # boite a lumiere principale, haut avant gauche
         add_area("Key", (-2.45 * s, -0.70 * s, 2.75 * s), (0, 0, 0.60 * s),
@@ -74,12 +79,12 @@ def lighting(scale=1.0, key=105.0, warm=(1.0, 0.97, 0.93), cool=(0.90, 0.95, 1.0
                  2.6 * s, key * 0.16, cool, size_y=2.0 * s),
         # reglettes : les longs eclats verticaux sur les aretes
         add_area("StripL", (-1.05 * s, -1.15 * s, 0.55 * s), (0, 0, 0.55 * s),
-                 0.085 * s, key * 3.10, (1.0, 1.0, 1.0), size_y=2.6 * s, spread=38),
+                 0.085 * s, key * 3.10 * strip_boost, (1.0, 1.0, 1.0), size_y=2.6 * s, spread=38),
         add_area("StripR", (1.05 * s, -1.10 * s, 0.60 * s), (0, 0, 0.55 * s),
-                 0.075 * s, key * 2.30, (0.96, 0.98, 1.0), size_y=2.4 * s, spread=38),
+                 0.075 * s, key * 2.30 * strip_boost, (0.96, 0.98, 1.0), size_y=2.4 * s, spread=38),
         # reglette haute : l'eclat horizontal sur le chanfrein superieur
         add_area("StripTop", (0.0, -0.95 * s, 1.35 * s), (0, 0, 0.12 * s),
-                 2.4 * s, key * 1.90, (1.0, 0.99, 0.97), size_y=0.085 * s, spread=44),
+                 2.4 * s, key * 1.90 * strip_boost, (1.0, 0.99, 0.97), size_y=0.085 * s, spread=44),
         # contre-jour, pour detacher la silhouette du fond
         add_area("Rim", (0.85 * s, 1.85 * s, 1.05 * s), (0, 0, 0.55 * s),
                  1.4 * s, key * 0.55, (0.86, 0.93, 1.0), size_y=1.0 * s),

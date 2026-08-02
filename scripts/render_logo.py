@@ -70,13 +70,17 @@ def main():
     if not transparent:
         studio.backdrop()
         studio.reflective_floor()
-    studio.lighting()
+    # une laque diffuse ne supporte pas l'eclairage calibre pour le metal
+    diffuse = o["finish"] == "paint"
+    studio.lighting(power=0.026 if diffuse else 1.0,
+                    strip_boost=0.55 if diffuse else 1.0)
 
     # la cible suit la hauteur reelle du logo
     tgt = (tgt[0], tgt[1], lift)
     studio.camera(loc, tgt, focal=focal, fstop=float(fstop))
+    exposure = float(o["exposure"]) + (0.0 if diffuse else 0.0)
     studio.render_settings(width=w, height=h, samples=int(o["samples"]),
-                           exposure=float(o["exposure"]),
+                           exposure=exposure,
                            output=os.path.abspath(o["out"]),
                            transparent=transparent)
 
