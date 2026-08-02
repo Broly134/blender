@@ -1,4 +1,58 @@
-# Portrait 3D photoréaliste — génération 100 % procédurale sous Blender
+# Rendus 3D procéduraux sous Blender
+
+Deux projets, même principe : **tout est généré par code**, aucun asset externe.
+
+1. [Logo PurePeptide en métal poli](#logo-purepeptide-en-3d-métal-poli)
+2. [Portrait photoréaliste](#portrait-3d-photoréaliste)
+
+---
+
+## Logo PurePeptide en 3D métal poli
+
+![logo](renders/logo_hero.png)
+
+```bash
+bpyenv/bin/python scripts/render_logo.py --svg PurePeptide_Symbol.svg \
+    --res 1400x1400 --samples 260 --view hero --out renders/logo_hero.png
+```
+
+| option | rôle |
+|---|---|
+| `--view` | `hero` (3/4), `front`, `tilt`, `macro` |
+| `--finish` | `polished`, `brushed`, `chrome`, `gold`, `paint` |
+| `--depth` / `--bevel` | épaisseur et chanfrein |
+| `--dome` | bombé des pastilles (0 = disques plats) |
+| `--roughness` | force la rugosité du métal |
+| `--alpha 1` | fond transparent |
+
+### Ce qui a été nécessaire
+
+**Le SVG est lu ici, pas par Blender.** L'importeur natif ignore les `stroke`
+et les dégradés — or ce logo est fait exactement de ça : deux traits épais en
+dégradé et quatorze pastilles en camaïeu bleu → turquoise. `logo/svgparse.py`
+relit donc le fichier (transformations, primitives, chemins, `linearGradient`)
+et `logo/geometry.py` convertit chaque trait en contour fermé avec **raccords
+en onglet** aux sommets, sans quoi les angles du cadre partent en trous.
+
+**La couleur de marque ne peut pas servir telle quelle.** Sur un métal, la
+couleur de base est une réflectance, pas un pigment : un bleu marine saturé
+donnerait un métal terne et gris. `logo/metal.py` remonte la clarté dans une
+plage haute **en comprimant, pas en écrasant** — c'est ce qui préserve l'écart
+bleu marine → turquoise entre les pastilles.
+
+**Ce n'est pas le shader qui fait le métal, c'est le décor.** Le studio
+(`logo/studio.py`) est un vrai plateau : cyclorama, sol dont le flou de reflet
+croît avec la distance, boîte à lumière, et surtout des **réglettes étroites**
+qui posent les longs éclats sur les chanfreins. Deux accents aux couleurs de la
+marque réancrent la teinte dans les reflets. Sans ce contraste, un métal poli
+ne renvoie qu'un aplat gris et se lit « plastique ».
+
+**Les pastilles sont bombées en cabochon**, pas laissées plates : un disque
+plat ne renvoie qu'un aplat, une calotte accroche la lumière.
+
+---
+
+## Portrait 3D photoréaliste
 
 Ce dépôt construit **entièrement par code** (Python + Blender/Cycles) un portrait
 de personnage réaliste inspiré d'une photo de référence : homme noir barbu, chapeau
