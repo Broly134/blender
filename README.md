@@ -35,6 +35,11 @@ les 18 matériaux, les 8 sources du studio, le cyclorama, le sol et la caméra.
 Elle est enregistrée par **Blender 5.0** — une version antérieure ne l'ouvrira
 pas correctement.
 
+Les vues 3D y sont forcées en *Material Preview* : un `.blend` écrit depuis le
+module `bpy` repart des réglages d'usine, dont le mode *Solid*, qui affiche un
+gris uniforme sans aucun matériau. Sans ce réglage on ouvre le fichier et on ne
+voit pas les couleurs.
+
 Pour une version universelle (Blender 3.x / 4.x, ou tout autre logiciel 3D) :
 `renders/logo_purepeptide.glb`, en glTF. La géométrie et les matériaux
 métalliques passent tels quels ; le studio, lui, est à refaire côté logiciel.

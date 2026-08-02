@@ -113,6 +113,7 @@ def main():
     # en dernier : dans le module bpy, save_as_mainfile remplace le contexte
     # courant et coupe court a tout ce qui suit
     if o["save"]:
+        studio.set_viewport("MATERIAL")
         bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(o["save"]))
         print("BLEND", o["save"])
 

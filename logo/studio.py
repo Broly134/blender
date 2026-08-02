@@ -248,6 +248,23 @@ def world(strength=0.022, top=(0.10, 0.12, 0.15), bottom=(0.010, 0.011, 0.013)):
     return w
 
 
+def set_viewport(shading="MATERIAL"):
+    """Prepare les vues 3D pour l'ouverture du fichier.
+
+    Un .blend enregistre depuis le module bpy repart des reglages d'usine : le
+    workspace Layout s'ouvre en mode Solid, qui affiche un gris uniforme. Sans
+    ce reglage, on ouvre le fichier et on ne voit aucune couleur.
+    """
+    for screen in bpy.data.screens:
+        for area in screen.areas:
+            if area.type != "VIEW_3D":
+                continue
+            for space in area.spaces:
+                if space.type != "VIEW_3D":
+                    continue
+                _set_enum(space.shading, "type", [shading, "MATERIAL", "SOLID"])
+
+
 def camera(location, target, focal=85.0, fstop=8.0):
     data = bpy.data.cameras.new("Camera")
     data.lens = focal
