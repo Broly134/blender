@@ -30,6 +30,9 @@ DEFAULTS = {
     "alpha": "0",
     "post": "1",
     "dome": "0.44",
+    "save": "",
+    "export": "",
+    "norender": "0",
 }
 
 VIEWS = {
@@ -84,15 +87,34 @@ def main():
                            output=os.path.abspath(o["out"]),
                            transparent=transparent)
 
-    bpy.ops.render.render(write_still=True)
-    print("ECRIT", o["out"])
+    if o["export"]:
+        # glTF : les materiaux metalliques passent tels quels, et le fichier
+        # s'ouvre dans n'importe quelle version de Blender (ou tout autre outil)
+        for ob in bpy.context.scene.objects:
+            ob.select_set(ob in objs)
+        bpy.context.view_layer.objects.active = objs[0]
+        bpy.ops.export_scene.gltf(filepath=os.path.abspath(o["export"]),
+                                  export_format="GLB",
+                                  use_selection=True,
+                                  export_apply=True)
+        print("EXPORT", o["export"])
 
-    if o["post"] != "0" and not transparent:
+    if o["norender"] != "1":
+        bpy.ops.render.render(write_still=True)
+        print("ECRIT", o["out"])
+
+    if o["post"] != "0" and not transparent and o["norender"] != "1":
         from postprocess import process, _load, _save
         px, iw, ih = _load(o["out"])
         _save(process(px, bloom=0.13, vignette=0.22, grain=0.0035),
               os.path.abspath(o["out"]), iw, ih)
         print("POST", o["out"])
+
+    # en dernier : dans le module bpy, save_as_mainfile remplace le contexte
+    # courant et coupe court a tout ce qui suit
+    if o["save"]:
+        bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(o["save"]))
+        print("BLEND", o["save"])
 
 
 main()

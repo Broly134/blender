@@ -24,6 +24,28 @@ bpyenv/bin/python scripts/render_logo.py --svg PurePeptide_Symbol.svg \
 | `--dome` | bombé des pastilles (0 = disques plats) |
 | `--roughness` | force la rugosité du métal |
 | `--alpha 1` | fond transparent |
+| `--save f.blend` | enregistre la scène Blender |
+| `--export f.glb` | exporte la géométrie + matériaux en glTF |
+| `--norender 1` | n'exporte que les fichiers, sans lancer le rendu |
+
+### Ouvrir la scène dans Blender
+
+`renders/logo_purepeptide.blend` contient la scène complète : les 16 pièces,
+les 18 matériaux, les 8 sources du studio, le cyclorama, le sol et la caméra.
+Elle est enregistrée par **Blender 5.0** — une version antérieure ne l'ouvrira
+pas correctement.
+
+Pour une version universelle (Blender 3.x / 4.x, ou tout autre logiciel 3D) :
+`renders/logo_purepeptide.glb`, en glTF. La géométrie et les matériaux
+métalliques passent tels quels ; le studio, lui, est à refaire côté logiciel.
+
+Régénérer les deux :
+
+```bash
+bpyenv/bin/python scripts/render_logo.py --norender 1 \
+    --save renders/logo_purepeptide.blend \
+    --export renders/logo_purepeptide.glb
+```
 
 ### Ce qui a été nécessaire
 
